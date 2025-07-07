@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.example</groupId>
-	<artifactId>serving-web-content</artifactId>
+	<artifactId>gym-ai-backend</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
-	<name>serving-web-content</name>
+	<name>gym-ai-backend</name>
 	<description>Demo project for Spring Boot</description>
 	<url/>
 	<licenses>
