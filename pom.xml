@@ -6,13 +6,13 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>3.5.0</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<relativePath/>
 	</parent>
 	<groupId>com.example</groupId>
-	<artifactId>gym-ai-backend</artifactId>
+	<artifactId>gym-backend</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
-	<name>gym-ai-backend</name>
+	<name>gym-backend</name>
 	<description>Demo project for Spring Boot</description>
 	<url/>
 	<licenses>
