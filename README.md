@@ -265,7 +265,7 @@ DB_PASS=gympassword
 ### Getting Help
 1. Check this documentation first
 2. Search existing issues in the repository
-3. Ask team members in Slack/Teams
+3. Ask team members in chat
 4. Create new issue with detailed description
 
 ### Useful Commands Reference
