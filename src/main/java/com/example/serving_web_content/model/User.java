@@ -1,12 +1,11 @@
 package com.example.serving_web_content.model;
 
 import jakarta.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+
 import java.util.Objects;
 
 @Entity // This tells Hibernate to make a table out of this class
-public class Player {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int userId;
@@ -52,8 +51,8 @@ public class Player {
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof Player player)) return false;
-        return userId == player.userId && Objects.equals(username, player.username) && Objects.equals(email, player.email);
+        if (!(o instanceof User user)) return false;
+        return userId == user.userId && Objects.equals(username, user.username) && Objects.equals(email, user.email);
     }
 
     @Override
@@ -63,6 +62,6 @@ public class Player {
 
     @Override
     public String toString() {
-        return "Player{" + "userId=" + userId + ", username='" + username + '\'' + ", password='" + password + '\'' + ", email='" + email + '\'' + '}';
+        return "User{" + "userId=" + userId + ", username='" + username + '\'' + ", password='" + password + '\'' + ", email='" + email + '\'' + '}';
     }
 }

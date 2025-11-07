@@ -10,7 +10,7 @@ public class EquipmentSchedule {
     private int id;
 
     @ManyToOne
-    private Player player;
+    private User user;
 
     @ManyToOne
     private Equipment equipment;
@@ -21,9 +21,9 @@ public class EquipmentSchedule {
 
     }
 
-    public EquipmentSchedule(int id, Player player, Equipment equipment, LocalDate scheduledDate) {
+    public EquipmentSchedule(int id, User user, Equipment equipment, LocalDate scheduledDate) {
         this.id = id;
-        this.player = player;
+        this.user = user;
         this.equipment = equipment;
         this.scheduledDate = scheduledDate;
     }
@@ -38,12 +38,12 @@ public class EquipmentSchedule {
         this.id = id;
     }
 
-    public Player getPlayer() {
-        return player;
+    public User getPlayer() {
+        return user;
     }
 
-    public void setPlayer(Player player) {
-        this.player = player;
+    public void setPlayer(User user) {
+        this.user = user;
     }
 
     public Equipment getEquipment() {

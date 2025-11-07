@@ -1,7 +1,7 @@
 package com.example.serving_web_content.controller;
 
-import com.example.serving_web_content.model.Player;
-import com.example.serving_web_content.repository.PlayerRepository;
+import com.example.serving_web_content.model.User;
+import com.example.serving_web_content.repository.UserRepository;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,17 +16,17 @@ import java.util.Optional;
 public class AuthController {
 
     @Autowired
-    private PlayerRepository playerRepository;
+    private UserRepository userRepository;
 
     @PostMapping("/login")
-    public ResponseEntity<Player> login(@RequestBody Player loginRequest, HttpSession session) {
+    public ResponseEntity<User> login(@RequestBody User loginRequest, HttpSession session) {
         String email = loginRequest.getEmail();
         String password = loginRequest.getPassword();
 
-        Optional<Player> userOpt = playerRepository.findByEmailAndPassword(email, password);
+        Optional<User> userOpt = userRepository.findByEmailAndPassword(email, password);
 
         if (userOpt.isPresent()) {
-            Player user = userOpt.get();
+            User user = userOpt.get();
             user.setPassword(null); // don't return password
             session.setAttribute("currentUser", user);
             session.setMaxInactiveInterval(5 * 60); // 5 minutes
@@ -37,8 +37,8 @@ public class AuthController {
     }
 
     @GetMapping("/currentUser")
-    public Player getCurrentUser(HttpSession session) {
-        Player currentUser = (Player) session.getAttribute("currentUser");
+    public User getCurrentUser(HttpSession session) {
+        User currentUser = (User) session.getAttribute("currentUser");
         if (currentUser == null) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You are not logged in");
         }
