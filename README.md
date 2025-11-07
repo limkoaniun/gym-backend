@@ -145,7 +145,7 @@ Configures MySQL 8.0 container with persistent storage.
 3. Run application: `./mvnw spring-boot:run`
 
 ### Making Changes
-1. Create feature branch: `git checkout -b feature/your-feature-name`
+1. Create ticket branch: `git checkout -b WEB-123` (or your ticket number)
 2. Make your changes
 3. Test locally
 4. Commit and push: `git add . && git commit -m "Your message"`
@@ -252,10 +252,7 @@ DB_PASS=gympassword
 
 ### Git Workflow
 - `main` branch for production-ready code
-- `develop` branch for integration
-- Feature branches: `feature/description`
-- Bug fixes: `bugfix/description`
-- Hot fixes: `hotfix/description`
+- Branch names should use ticket names and numbers (e.g., WEB-4, API-123)
 
 ### Code Standards
 - Follow Java naming conventions
