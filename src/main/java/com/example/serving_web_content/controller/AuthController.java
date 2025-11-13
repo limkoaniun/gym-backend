@@ -24,14 +24,18 @@ public class AuthController {
         String password = loginRequest.getPassword();
 
         Optional<User> userOpt = userRepository.findByEmailAndPassword(email, password);
-
+        // Allow use both email and username to login
+        if (!userOpt.isPresent()) {
+            userOpt = userRepository.findByUsernameAndPassword(email, password);
+        }
         if (userOpt.isPresent()) {
             User user = userOpt.get();
             user.setPassword(null); // don't return password
             session.setAttribute("currentUser", user);
             session.setMaxInactiveInterval(5 * 60); // 5 minutes
             return new ResponseEntity<>(user, HttpStatus.OK);
-        } else {
+        }
+        else{
             return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
         }
     }
