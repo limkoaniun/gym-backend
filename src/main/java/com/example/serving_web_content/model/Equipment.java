@@ -10,7 +10,7 @@ public class Equipment {
     private int equipmentId;
 
     private String name;
-    private String type;
+    private String type; // cardio
     private List<Muscle> muscles;
     private String imageUrl;
     private String description;
