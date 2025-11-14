@@ -2,8 +2,6 @@ package com.example.serving_web_content.model;
 
 import jakarta.persistence.*;
 
-import java.util.Objects;
-
 @Entity // This tells Hibernate to make a table out of this class
 public class User {
     @Id
@@ -66,6 +64,30 @@ public class User {
         this.password = password;
     }
 
+    public String getFullName() {
+        if (firstName == null && lastName == null) return null;
+        if (lastName == null || lastName.isEmpty()) return firstName;
+        return firstName + " " + lastName;
+    }
+
+    public void setFullName(String name) {
+        if (name == null || name.trim().isEmpty()) {
+            this.firstName = null;
+            this.lastName = null;
+            return;
+        }
+
+        String[] parts = name.trim().split("\\s+");
+
+        if (parts.length == 1) {
+            this.firstName = parts[0];
+            this.lastName = "";
+        } else {
+            this.firstName = parts[0];
+            this.lastName = String.join(" ", java.util.Arrays.copyOfRange(parts, 1, parts.length));
+        }
+    }
+
     public String getRole() {
         return role;
     }
@@ -86,4 +108,5 @@ public class User {
                 ", role='" + role + '\'' +
                 '}';
     }
+
 }

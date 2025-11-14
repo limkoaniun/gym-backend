@@ -288,8 +288,18 @@ git pull origin main       # Pull latest changes
 git checkout -b feature/name # Create feature branch
 ```
 
----
+### Get an ID Token for testing
 
-**Happy Coding! 🚀**
+1. Visit:
+   https://accounts.google.com/o/oauth2/v2/auth?client_id=YOUR_CLIENT_ID&redirect_uri=https://oauth.pstmn.io/v1/callback&response_type=id_token&scope=openid%20email%20profile&nonce=abc123&prompt=consent
+   (the client id is from console.cloud.google.
+2. Sign in.
 
-For questions or issues, please contact the development team.
+3. Copy the value after `id_token=` and before `&authuser=`.
+
+4. Use it in Postman:
+   POST http://localhost:8080/api/auth/google
+   Body:
+   {
+   "idToken": "<paste here>"
+   }
