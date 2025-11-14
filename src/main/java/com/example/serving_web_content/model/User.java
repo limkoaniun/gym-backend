@@ -8,29 +8,22 @@ import java.util.Objects;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int userId;
+    private int id;
+    @Column(unique = true)
     private String username;
-    private String password;
     @Column(unique = true)
     private String email;
+    private String firstName;
+    private String lastName;
+    private String password;
+    private String role;
 
-//    @OneToMany(mappedBy = "player", cascade = CascadeType.ALL)
-//    private List<EquipmentSchedule> equipmentSchedules = new ArrayList<>();
-
-    public String getPassword() {
-        return password;
+    public int getId() {
+        return id;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getUsername() {
@@ -49,19 +42,48 @@ public class User {
         this.email = email;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (!(o instanceof User user)) return false;
-        return userId == user.userId && Objects.equals(username, user.username) && Objects.equals(email, user.email);
+    public String getFirstName() {
+        return firstName;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(userId, username, email);
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     @Override
     public String toString() {
-        return "User{" + "userId=" + userId + ", username='" + username + '\'' + ", password='" + password + '\'' + ", email='" + email + '\'' + '}';
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", email='" + email + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", password='" + password + '\'' +
+                ", role='" + role + '\'' +
+                '}';
     }
 }
