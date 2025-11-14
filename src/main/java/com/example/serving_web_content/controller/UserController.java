@@ -35,7 +35,7 @@ public class UserController {
     User getUserByUserId(HttpSession session, @PathVariable int userId) {
         User currentUser = (User) session.getAttribute("currentUser");
         if (!currentUser.getRole().equals("admin") && currentUser.getId() != userId) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Do not have permission to  update the user");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Do not have permission to update the user");
         }
         Optional<User> optionalUser = userRepository.findById(userId);
         if (optionalUser.isPresent()) {
@@ -46,14 +46,14 @@ public class UserController {
     }
 
 
-    @PutMapping
-    User updateUser(HttpSession session, @RequestBody User newUser, @PathVariable int id) {
+    @PutMapping("/{userId}")
+    User updateUser(HttpSession session, @RequestBody User newUser, @PathVariable int userId) {
         User currentUser = (User) session.getAttribute("currentUser");
-        if (!currentUser.getRole().equals("admin") && currentUser.getId() != id) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Do not have permission to  update the user");
+        if (!currentUser.getRole().equals("admin") && currentUser.getId() != userId) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Do not have permission to update the user");
         }
 
-        Optional<User> userOptional = userRepository.findById(id);
+        Optional<User> userOptional = userRepository.findById(userId);
         if(userOptional.isPresent()){
             User oldUser = userOptional.get();
             oldUser.setFirstName(newUser.getFirstName());
