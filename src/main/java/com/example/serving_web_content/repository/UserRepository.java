@@ -8,9 +8,6 @@ import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Integer> {
 
-    User findByUsernameAndPassword(String username, String password);
-    // this works exactly like 'select * from player where username = ... and password = ...'
-
     boolean existsByUsername(String username);
     // this is like 'select count(*) > 0 from player where username = ...'
 
@@ -19,4 +16,5 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     User findByUsername(String username);
 
     Optional<User> findByEmailAndPassword(String email, String password);
+    Optional<User> findByUsernameAndPassword(String username, String password);
 }
