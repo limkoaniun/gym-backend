@@ -2,25 +2,31 @@ package com.example.serving_web_content.model;
 
 import jakarta.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Equipment {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int equipmentId;
-
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String name;
-    private String type; // cardio
-    private List<Muscle> muscles;
-    private String imageUrl;
+
+    @ManyToMany
+    private Set<EquipmentTag> tags;
+
+    @OneToMany(mappedBy = "equipment", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<EquipmentUsage> usages;
+
+    @ManyToMany
+    private List<Media> medias;
     private String description;
 
-    public int getEquipmentId() {
-        return equipmentId;
+    public Long getId() {
+        return id;
     }
 
-    public void setEquipmentId(int equipmentId) {
-        this.equipmentId = equipmentId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -31,28 +37,28 @@ public class Equipment {
         this.name = name;
     }
 
-    public String getType() {
-        return type;
+    public Set<EquipmentTag> getTags() {
+        return tags;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setTags(Set<EquipmentTag> tags) {
+        this.tags = tags;
     }
 
-    public List<Muscle> getMuscles() {
-        return muscles;
+    public List<EquipmentUsage> getUsages() {
+        return usages;
     }
 
-    public void setMuscles(List<Muscle> muscles) {
-        this.muscles = muscles;
+    public void setUsages(List<EquipmentUsage> usages) {
+        this.usages = usages;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
+    public List<Media> getMedias() {
+        return medias;
     }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public void setMedias(List<Media> medias) {
+        this.medias = medias;
     }
 
     public String getDescription() {
