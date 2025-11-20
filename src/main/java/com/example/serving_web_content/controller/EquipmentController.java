@@ -1,9 +1,13 @@
 package com.example.serving_web_content.controller;
 
+import com.example.serving_web_content.aop.RolesAllowed;
 import com.example.serving_web_content.model.Equipment;
 import com.example.serving_web_content.model.EquipmentUsage;
+import com.example.serving_web_content.model.User;
 import com.example.serving_web_content.repository.EquipmentRepository;
 import com.example.serving_web_content.repository.EquipmentUsageRepository;
+import com.example.serving_web_content.repository.UserRepository;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -19,28 +23,30 @@ public class EquipmentController {
     private EquipmentRepository equipmentRepository;
     @Autowired
     private EquipmentUsageRepository equipmentUsageRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     @GetMapping()
-    List<Equipment> getAll(){
+    List<Equipment> getAll() {
         return equipmentRepository.findAll();
     }
 
     @GetMapping("/{equipmentId}")
-    Equipment getById(@PathVariable Long equipmentId){
+    Equipment getById(@PathVariable Long equipmentId) {
         Optional<Equipment> result = equipmentRepository.findById(equipmentId);
         return result.orElse(null);
     }
 
     @PostMapping
-    Equipment newEquipment(@RequestBody Equipment newEquipment){
+    Equipment newEquipment(@RequestBody Equipment newEquipment) {
         return equipmentRepository.save(newEquipment);
     }
 
     @PutMapping("/{equipmentId}")
-    Equipment replaceEquipment (@RequestBody Equipment newEquipment, @PathVariable Long equipmentId){
-        Optional<Equipment> equipmentOptional=equipmentRepository.findById(equipmentId);
-        if(equipmentOptional.isPresent()){
-            Equipment oldequipment=equipmentOptional.get();
+    Equipment replaceEquipment(@RequestBody Equipment newEquipment, @PathVariable Long equipmentId) {
+        Optional<Equipment> equipmentOptional = equipmentRepository.findById(equipmentId);
+        if (equipmentOptional.isPresent()) {
+            Equipment oldequipment = equipmentOptional.get();
             oldequipment.setName(newEquipment.getName());
             oldequipment.setTags(newEquipment.getTags());
             oldequipment.setUsages(newEquipment.getUsages());
@@ -58,9 +64,9 @@ public class EquipmentController {
     }
 
     @PostMapping("/{equipmentId}/usages")
-    EquipmentUsage newUsage(@RequestBody EquipmentUsage newUsage, @PathVariable Long equipmentId){
-        Optional<Equipment> equipmentOptional=equipmentRepository.findById(equipmentId);
-        if(equipmentOptional.isPresent()){
+    EquipmentUsage newUsage(@RequestBody EquipmentUsage newUsage, @PathVariable Long equipmentId) {
+        Optional<Equipment> equipmentOptional = equipmentRepository.findById(equipmentId);
+        if (equipmentOptional.isPresent()) {
             newUsage.setEquipment(equipmentOptional.get());
             return equipmentUsageRepository.save(newUsage);
         }
@@ -75,5 +81,12 @@ public class EquipmentController {
             return equipmentUsageRepository.findByEquipmentId(equipmentId);
         }
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Equipment not found");
+    }
+
+
+    @GetMapping("/users/{userId}/favs")
+    @RolesAllowed({"ADMIN", "SELF"})
+    List<Equipment> getUserFavs(HttpSession session, @PathVariable Long userId) {
+        return userRepository.findFavouredByUser(userId);
     }
 }

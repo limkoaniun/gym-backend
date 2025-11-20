@@ -2,6 +2,9 @@ package com.example.serving_web_content.model;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+import java.util.Set;
+
 @Entity // This tells Hibernate to make a table out of this class
 public class User {
     @Id
@@ -15,6 +18,17 @@ public class User {
     private String lastName;
     private String password;
     private String role;
+
+    @ManyToMany
+    private List<Equipment> favouredEquipments;
+
+    public List<Equipment> getFavouredEquipments() {
+        return favouredEquipments;
+    }
+
+    public void setFavouredEquipments(List<Equipment> favouredEquipments) {
+        this.favouredEquipments = favouredEquipments;
+    }
 
     public Long getId() {
         return id;

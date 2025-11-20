@@ -1,6 +1,5 @@
 package com.example.serving_web_content.aop;
 
-
 import com.example.serving_web_content.model.User;
 import jakarta.servlet.http.HttpSession;
 import org.aspectj.lang.JoinPoint;
@@ -29,18 +28,39 @@ public class RoleCheckAspect {
             throw new AccessDeniedException("User is not logged in");
         }
         User currentUser = (User) userObj;
-
         String userRole = currentUser.getRole();
+
         boolean permitted = false;
         for (String role : allowedRoles) {
-            if (role.equals(userRole)) {
+            if (role.equalsIgnoreCase(userRole)) {
                 permitted = true;
                 break;
+            } else if (role.equalsIgnoreCase("SELF")) {
+                // check currentuser.getUserId == paramUserId
+                // if yes
+                // permitted = true;
+                // break;
+                Long targetId = extractUserId(joinPoint);
+                if (targetId != null && targetId.equals(currentUser.getId())) {
+                    permitted = true;
+                    break;
+                }
             }
         }
 
         if (!permitted) {
             throw new AccessDeniedException("User with role " + userRole + " does not have permission");
         }
+    }
+
+    // helper method that reads @PathVariable Long userId from the method arguments
+    private Long extractUserId(JoinPoint joinPoint) {
+        Object[] args = joinPoint.getArgs();
+        for (Object arg : args) {
+            if (arg instanceof Long) {
+                return (Long) arg;
+            }
+        }
+        return null;
     }
 }
