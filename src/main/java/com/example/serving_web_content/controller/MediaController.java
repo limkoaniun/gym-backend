@@ -1,5 +1,6 @@
 package com.example.serving_web_content.controller;
 
+import com.example.serving_web_content.aop.RolesAllowed;
 import com.example.serving_web_content.model.Media;
 import com.example.serving_web_content.repository.MediaRepository;
 import org.apache.tika.Tika;
@@ -35,8 +36,32 @@ public class MediaController {
     private final Tika tika = new Tika();
     @Autowired
     private MediaRepository mediaRepository;
+    private static final String MEDIA_DIR = "media";
+
+    @DeleteMapping(value= "/{mediaId}")
+    public void deleteMedia(@PathVariable Long mediaId){
+        Media media = mediaRepository.findById(mediaId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Media not found"));
+        String fileName = media.getOriginalFileName();
+        Path filePath = Paths.get(MEDIA_DIR).resolve(fileName);
+        try {
+            Files.deleteIfExists(filePath);
+            mediaRepository.deleteById(mediaId);
+        } catch (IOException e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
+                    "Failed to delete media file: " + filePath, e);
+        }
+    }
+    @PutMapping(value= "/{mediaId}")
+    public void updateMediaName(@RequestBody Media newMedia, @PathVariable Long mediaId) {
+        Media media = mediaRepository.findById(mediaId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Media not found"));
+        media.setName(newMedia.getName());
+        mediaRepository.save(media);
+    }
 
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @RolesAllowed("admin")
     public String uploadFile(@RequestParam(required = false) MultipartFile file, @RequestParam(required = false) String name, @RequestParam(required = false) String url) throws IOException {
         if (url != null && !url.isEmpty()) {
             Media urlMedia = new Media();
